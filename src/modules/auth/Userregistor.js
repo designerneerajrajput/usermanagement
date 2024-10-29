@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Userregistor() {
     const [fname, setFname] = useState("");
@@ -12,10 +12,10 @@ function Userregistor() {
     const [agreewith, setAgreewith] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    function fnameHandlechange(event) {
-        const fnamevalue = event.target.value;
-        setFname(fnamevalue)
-    }
+    const navigate = useNavigate()
+
+
+
 
     const lnamehandlechange = (event) => {
         const lnamevalue = event.target.value;
@@ -64,6 +64,7 @@ function Userregistor() {
             return;
         }
         setLoading(true);
+
         setTimeout(() => {
             setLoading(false);
             console.log({
@@ -75,6 +76,7 @@ function Userregistor() {
                 pphoto,
                 agreewith
             });
+            navigate('/userlist')
 
             setFname("");
             setLname("");
@@ -108,33 +110,46 @@ function Userregistor() {
                                             <label className="col-form-label pt-0">Your Name</label>
                                             <div className="row g-2" >
                                                 <div className="col-6" >
-                                                    <input className="form-control" type="text" required="" value={fname} onChange={fnameHandlechange} placeholder="First name" />
+                                                    <input className="form-control" type="text" required="" value={fname} onChange={(e) => { setFname(e.target.value) }} placeholder="First name" />
                                                 </div>
                                                 <div className="col-6" >
                                                     <input className="form-control" type="text" required="" value={lname} onChange={lnamehandlechange} placeholder="Last name" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="form-group" >
-                                            <label className="col-form-label">Email Address</label>
-                                            <input className="form-control" type="email" required="" value={email} onChange={emailHandleChnage} placeholder="Email address" />
+                                        <div className='row'>
+                                            <div className="col-md-6">
+                                                <div className="form-group" >
+
+
+
+                                                    <label className="col-form-label">Email Address</label>
+                                                    <input className="form-control" type="email" required="" value={email} onChange={emailHandleChnage} placeholder="Email address" />
+                                                </div>  </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group" >
+                                                    <label className="col-form-label">Phone</label>
+                                                    <input className="form-control" type="text" required="" value={phone} onChange={phoneHandleChnage} placeholder="Phone" />
+                                                </div></div>
                                         </div>
-                                        <div className="form-group" >
-                                            <label className="col-form-label">Phone</label>
-                                            <input className="form-control" type="text" required="" value={phone} onChange={phoneHandleChnage} placeholder="Phone" />
-                                        </div>
-                                        <div className="form-group" >
-                                            <label className="col-form-label">Password</label>
-                                            <div className="form-input position-relative" >
-                                                <input className="form-control" type="password" value={password} onChange={passwordhandleChange} required="" placeholder="*********" />
-                                                <div className="show-hide" ><span className="show"></span></div>
-                                            </div>
-                                        </div>
-                                        <div className="form-group" >
-                                            <label className="col-form-label">Confirm Password</label>
-                                            <div className="form-input position-relative" >
-                                                <input className="form-control" type="password" value={cpassword} onChange={cpasswordhandleChange} required="" placeholder="*********" />
-                                                <div className="show-hide" ><span className="show"></span></div>
+
+                                        <div className='row'>
+                                            <div className="col-md-6">
+                                                <div className="form-group" >
+                                                    <label className="col-form-label">Password</label>
+                                                    <div className="form-input position-relative" >
+                                                        <input className="form-control" type="password" value={password} onChange={passwordhandleChange} required="" placeholder="*********" />
+                                                        <div className="show-hide" ><span className="show"></span></div>
+                                                    </div>
+                                                </div></div>
+                                            <div className="col-md-6">
+                                                <div className="form-group" >
+                                                    <label className="col-form-label">Confirm Password</label>
+                                                    <div className="form-input position-relative" >
+                                                        <input className="form-control" type="password" value={cpassword} onChange={cpasswordhandleChange} required="" placeholder="*********" />
+                                                        <div className="show-hide" ><span className="show"></span></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="form-group" >
@@ -147,7 +162,7 @@ function Userregistor() {
                                         <div className="form-group mb-0" >
                                             <div className="checkbox p-0 pb-10" >
                                                 <input type="checkbox" checked={agreewith} onChange={agreewithHandleChange} />
-                                                <label className="text-muted" for="checkbox1">Agree with<a className="ms-2" href="#"  >Privacy Policy</a></label>
+                                                <label className="text-muted" >Agree with<a className="ms-2" href="#"  >Privacy Policy</a></label>
                                             </div>
                                             <button className="theme-btn btn-block w-100" type="submit" disabled={loading}>
                                                 {loading ? (

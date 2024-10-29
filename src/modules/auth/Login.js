@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
+
 
 
 const Login = () => {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState('');
   const [loading, setLoading] = useState(false); // Add loading state
-
+  const [isLogin, setIsLogin] = useState(false)
   function handleEmailChange(event) {
     const emailValue = event.target.value;
     setEmail(emailValue);
@@ -19,27 +22,48 @@ const Login = () => {
     setPassword(passvalue);
   }
 
-  function handleRememberMeChange(event) {
-    const rememberMeValue = event.target.checked;
-    setRememberMe(rememberMeValue);
+  function handleRememberMeChange() {
+    setRememberMe(!rememberMe);
   }
   function handleSubmit(event) {
     event.preventDefault();
-    setLoading(true); // Show loader
-    setTimeout(() => {
+    setLoading(false);
+    if (email === "" || password === "" || !rememberMe) {
+      alert("All fields are required!");
+    } else {
 
 
-      setLoading(false); // Hide loader after 1 second
-      console.log({
-        email: email,
-        password: password,
-        rememberMe: rememberMe,
-      });
+      const isLogin = true;
+      setLoading(true); // Show loader
+      setTimeout(() => {
 
-      setEmail('');
-      setPassword('');
-      // You can now perform the actual form submission (e.g., API call)
-    }, 1000);
+
+        setLoading(false); // Hide loader after 1 second
+        console.log({
+          email: email,
+          password: password,
+          rememberMe: rememberMe,
+        });
+        setIsLogin(true)
+        if (isLogin) {
+          alert(`Login Successful! Your email is: ${email}, Your Password is: ${password}`);
+          navigate("/dashboard")
+        }
+
+
+        setEmail('');
+        setPassword('');
+
+      }, 1000);
+    }
+
+
+
+
+
+
+
+
   }
 
 
@@ -66,7 +90,7 @@ const Login = () => {
                         placeholder="Enter email id"
                         value={email}
                         onChange={handleEmailChange}
-                        required
+
                       />
                     </div>
 
@@ -79,7 +103,7 @@ const Login = () => {
                           placeholder="Enter password"
                           value={password}
                           onChange={handlePasswordChange}
-                          required
+
                         />
                         <div className="show-hide">
                           {/* You can add logic to show/hide password */}
@@ -119,7 +143,13 @@ const Login = () => {
                         </div>
                       </div>
                     </div>
+                    {isLogin &&
+                      <>
+                        <p class="succesloging">You Have Successfully Login.</p>
 
+                      </>
+
+                    }
                     <p className="text-center dont-have-account">
                       Don't have an account?
                       <Link className="ms-2" to="/Createaccount">

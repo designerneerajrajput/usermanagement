@@ -146,10 +146,9 @@ section.login-page-wrapper {
 }
 
 .login-card .login-main {
-    width: 450px;
+    width: 508px;
     padding: 40px;
     border-radius: 10px;
-    -webkit-box-shadow: 0 0 37px rgba(8, 21, 66, 0.05);
     box-shadow: 0 0 37px rgba(8, 21, 66, 0.05);
     margin: 0 auto;
     background-color: #fff;
@@ -236,6 +235,16 @@ section.login-page-wrapper {
     100% {
         transform: rotate(360deg);
     }
+}
+
+p.succesloging {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background: #e9ffe9;
+    border-radius: 9px;
+    border: 1px solid green;
+    color: #000 !important;
 }
 
 /* =======================Login Register css end here=============== */
