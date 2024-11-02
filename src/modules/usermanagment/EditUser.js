@@ -1,72 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Sidebar from '../dashboard/Sidebar';
 import Header from '../dashboard/Header';
 import Footer from '../dashboard/Footer';
+import axios from 'axios';
 
 const EditUser = () => {
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [profileImage, setProfileImage] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
-    const [user, setUser] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        profileImage: ''
-    });
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch user data
-        axios.get(`http://localhost:4000/users/${id}`)
-            .then(response => {
-                setUser(response.data);
-                setLoading(false);
+        axios.get(`http://localhost:3004/users/${id}`)
+            .then((response) => {
+                setName(response.data.name);
+                setPhone(response.data.phone);
+                setEmail(response.data.email);
+                setProfileImage(response.data.profileImage);
             })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-                setLoading(false);
+            .catch((error) => {
+                console.log(error);
             });
-    }, [id]);
+    }, []);
 
-    const handleChange = (event) => {
-
-        const inputName = event.target.name;
-        const inputValue = event.target.value;
-
-
-
-        setUser((prevUser) => {
-
-            return {
-                ...prevUser,
-                [inputName]: inputValue
-            };
-        });
-    };
-
-    const handleSubmit = (e) => {
+    const updateHandleUser = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:4000/users/${id}`, user)
-            .then(response => {
-                console.log('User updated:', response.data);
+
+        const updatedUser = {
+            name,
+            phone,
+            email,
+            profileImage,
+        };
+
+        axios.put(`http://localhost:3004/users/${id}`, updatedUser)
+            .then(() => {
+
                 navigate('/usermanagment/users');
             })
-            .catch(error => {
-                console.error('Error updating user:', error);
+            .catch((error) => {
+                console.log(error);
             });
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-
-
-
-
     return (
-
         <div className="wrapper">
             <Sidebar />
 
@@ -76,20 +56,18 @@ const EditUser = () => {
                 <main className="content px-3 py-2">
                     <div className="container-fluid">
                         <div className="title-bar">
-                            <h4>Edit User</h4>
+                            <h4>Edit User {name} </h4>
                         </div>
                         <div className='row'>
                             <div className="col-md-12">
-
-
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={updateHandleUser}>
                                     <div className="mb-3">
                                         <label>Name:</label>
                                         <input
                                             type="text"
                                             name="name"
-                                            value={user.name}
-                                            onChange={handleChange}
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
                                             className="form-control"
                                             required
                                         />
@@ -99,8 +77,8 @@ const EditUser = () => {
                                         <input
                                             type="text"
                                             name="phone"
-                                            value={user.phone}
-                                            onChange={handleChange}
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
                                             className="form-control"
                                             required
                                         />
@@ -110,8 +88,8 @@ const EditUser = () => {
                                         <input
                                             type="email"
                                             name="email"
-                                            value={user.email}
-                                            onChange={handleChange}
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
                                             className="form-control"
                                             required
                                         />
@@ -121,14 +99,13 @@ const EditUser = () => {
                                         <input
                                             type="text"
                                             name="profileImage"
-                                            value={user.profileImage}
-                                            onChange={handleChange}
+                                            value={profileImage}
+                                            onChange={(e) => setProfileImage(e.target.value)}
                                             className="form-control"
                                         />
                                     </div>
                                     <button type="submit" className="btn btn-success">Update User</button>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -137,7 +114,6 @@ const EditUser = () => {
                 <Footer />
             </div>
         </div>
-
     );
 };
 

@@ -248,3 +248,38 @@ p.succesloging {
 }
 
 /* =======================Login Register css end here=============== */
+.totle-use h4 {
+    font-size: 20px;
+}
+
+.totle-use h4 b {
+    background: #ffc107;
+    width: 40px;
+    display: inline-block;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+table.table.table-striped.table-bordered {
+    background: #fff;
+}
+
+table.table {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+    padding: 45px !important;
+}
+
+main.content input.form-control {
+    border: navajowhite;
+    border: 1px solid #ddd;
+    border-radius: 0;
+}
+
+.btn {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.225);
+    border-radius: 5px;
+}

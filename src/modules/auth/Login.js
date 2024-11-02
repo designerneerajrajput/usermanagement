@@ -34,11 +34,11 @@ const Login = () => {
 
 
       const isLogin = true;
-      setLoading(true); // Show loader
+      setLoading(true);
       setTimeout(() => {
 
 
-        setLoading(false); // Hide loader after 1 second
+        setLoading(false);
         console.log({
           email: email,
           password: password,

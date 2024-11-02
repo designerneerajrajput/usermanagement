@@ -1,57 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../dashboard/Sidebar';
 import Header from '../dashboard/Header';
 import Footer from '../dashboard/Footer';
+import axios from 'axios';
 
 const AddUser = () => {
+
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [profileImage, setProfileImage] = useState('');
-    const [users, setUsers] = useState([]);
+
     const navigate = useNavigate();
-
-    // Fetch current users to determine next ID
-    useEffect(() => {
-        axios.get('http://localhost:4000/users')
-            .then(response => {
-                setUsers(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-    }, []);
-
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer your_token_here',
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const newUser = {
 
-            name,
-            phone,
-            email,
-            profileImage: profileImage || 'https://randomuser.me/api/portraits/men/1.jpg',
-        };
+        axios.get('http://localhost:3004/users')
+            .then((response) => {
+                const users = response.data;
 
-        axios.post('http://localhost:4000/users', newUser)
-            .then(response => {
-                console.log('User added:', response.data);
-                setUsers([...users, response.data]);
-                navigate('/usermanagment/users');
+                const maxId = users.length > 0 ? Math.max(...users.map(user => parseInt(user.id, 10))) : 0;
+                const newUserId = (maxId + 1).toString();
+
+
+                return axios.post('http://localhost:3004/users', {
+                    id: newUserId,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    profileImage: profileImage
+                }, {
+                    headers: headers
+                });
             })
-            .catch(error => {
-                console.error('Error adding user:', error);
+            .then((res) => {
+                console.log(res.data);
+                navigate("/usermanagment/users");
+            })
+            .catch((err) => {
+                console.log(err);
             });
     };
+
+
+
+
     return (
         <div className="wrapper">
             <Sidebar />
-
             <div className="main">
                 <Header />
-
                 <main className="content px-3 py-2">
                     <div className="container-fluid">
                         <div className="title-bar">
@@ -59,7 +63,7 @@ const AddUser = () => {
                         </div>
                         <div className="row">
                             <div className="col-md-6">
-                                <form onSubmit={handleSubmit}>
+                                <form >
                                     <div className="mb-3">
                                         <label htmlFor="name" className="form-label">Name</label>
                                         <input
@@ -103,13 +107,12 @@ const AddUser = () => {
                                             onChange={(e) => setProfileImage(e.target.value)}
                                         />
                                     </div>
-                                    <button type="submit" className="btn btn-success">Add User</button>
+                                    <button type="submit" className="btn btn-success" onClick={handleSubmit}>Add User</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </main>
-
                 <Footer />
             </div>
         </div>
